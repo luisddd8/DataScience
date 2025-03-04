@@ -9,13 +9,13 @@ st.title("Predicción de Precios de Viviendas")
 # Subtítulo
 st.write("Esta aplicación predice el precio de una vivienda basado en sus características.")
 
-# Cargar el modelo guardado
+# Cargar el modelo y el pipeline de preprocesamiento
 model = joblib.load("best_model.pkl")
+preprocessing_pipeline = joblib.load("preprocessing_pipeline.pkl")
 
 # Crear campos de entrada para las características
 st.sidebar.header("Ingresa las características de la vivienda")
 
-# Función para ingresar datos
 def user_input_features():
     longitude = st.sidebar.number_input("Longitud", value=-122.23)
     latitude = st.sidebar.number_input("Latitud", value=37.88)
@@ -49,12 +49,19 @@ input_df = user_input_features()
 st.subheader("Datos ingresados")
 st.write(input_df)
 
-# Preprocesar los datos (igual que en el entrenamiento)
-preprocessing_pipeline = joblib.load("preprocessing_pipeline.pkl")  # Guarda tu pipeline de preprocesamiento
-input_prepared = preprocessing_pipeline.transform(input_df)
+# Preprocesar los datos usando el pipeline
+try:
+    input_prepared = preprocessing_pipeline.transform(input_df)
+    st.subheader("Datos preprocesados")
+    st.write(input_prepared)
+except Exception as e:
+    st.error(f"Error al preprocesar los datos: {e}")
 
 # Hacer la predicción
 if st.button("Predecir"):
-    prediction = model.predict(input_prepared)
-    st.subheader("Predicción")
-    st.write(f"El precio predicho de la vivienda es: **${prediction[0]:,.2f}**")
+    try:
+        prediction = model.predict(input_prepared)
+        st.subheader("Predicción")
+        st.write(f"El precio predicho de la vivienda es: **${prediction[0]:,.2f}**")
+    except Exception as e:
+        st.error(f"Error al hacer la predicción: {e}")
