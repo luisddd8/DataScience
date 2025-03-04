@@ -50,8 +50,6 @@ st.subheader("Datos ingresados")
 st.write(input_df)
 
 # Preprocesar los datos (igual que en el entrenamiento)
-# Nota: Asegúrate de que el preprocesamiento sea el mismo que usaste en el entrenamiento.
-# Aquí asumimos que ya tienes un pipeline de preprocesamiento guardado.
 preprocessing_pipeline = joblib.load("preprocessing_pipeline.pkl")  # Guarda tu pipeline de preprocesamiento
 input_prepared = preprocessing_pipeline.transform(input_df)
 
