@@ -37,7 +37,7 @@ def user_input_features():
         'population': population,
         'households': households,
         'median_income': median_income,
-        'ocean_proximity': ocean_proximity
+        'ocean_proximity': ocean_proximity  # Asegúrate de que el nombre de la columna sea correcto
     }
     features = pd.DataFrame(data, index=[0])
     return features
